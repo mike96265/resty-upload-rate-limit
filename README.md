@@ -2,6 +2,8 @@
 
 ### this repo keeps a minimum openresty configuration and some lua code, show you how to limit upload rate.
 
+#### [关于这个功能的思路和一些想法](https://yukityan.cc/openresty-xian-zhi-wen-jian-shang-chuan-su-du/)
+
 #### setup
 ```console
 foo@bar> git clone https://github.com/luvjoey1996/resty-upload-rate-limit.git
