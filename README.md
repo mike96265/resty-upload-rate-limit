@@ -1,6 +1,6 @@
 # resty-upload-rate-limit
-Limit file upload rate in openresty
-### this repo keeps a minimun openresty configuration file, show you show to limit upload rate.
+
+### this repo keeps a minimum openresty configuration file, show you show to limit upload rate.
 
 #### setup
 ```console
