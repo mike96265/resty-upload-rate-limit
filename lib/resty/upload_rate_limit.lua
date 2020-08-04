@@ -2,16 +2,16 @@ local ngx_req = ngx.req
 local req_socket = ngx.req.socket
 local ngx_now = ngx.now
 local ngx_sleep = ngx.sleep
-local _M = { version = '0.0.1' }
+local _M = { version = '0.0.3' }
 
-local CHUNK_SIZE = 4096
-local BUFFER_SIZE = 128 * 1024
+local CHUNK_SIZE = 4
+local BUFFER_SIZE = 128
 
 local mt = {
     __index = _M
 }
 
-local function limit_upload_rate(rate, after, buffer_size, chunk_size)
+local function limit_upload_rate(rate, after, buf_size, chunk_size)
     if rate then
         local sock = req_socket()
         local start = ngx_now()
@@ -19,9 +19,9 @@ local function limit_upload_rate(rate, after, buffer_size, chunk_size)
         local rate_in_bytes = rate * 1024
         local body_size = 0 - after * 1024
 
-        ngx_req.init_body(buf_size)
+        ngx_req.init_body(buf_size * 1024)
         while true do
-            local chunk, err = sock:receive(chunk_size)
+            local chunk, err = sock:receive(chunk_size * 1024)
             if not chunk then
                 if err == "closed" then
                     break
@@ -48,7 +48,7 @@ local function limit_upload_rate(rate, after, buffer_size, chunk_size)
     end
 end
 
-function _M.new(rate, after, buf_size, chunk_size)
+function _M.new(self, rate, after, buf_size, chunk_size)
     return setmetatable({
         rate = rate or 0,
         after = after or 0,
