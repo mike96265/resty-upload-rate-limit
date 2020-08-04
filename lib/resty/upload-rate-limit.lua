@@ -17,7 +17,7 @@ local function limit_upload_rate(rate, after, buffer_size, chunk_size)
         local start = ngx_now()
 
         local rate_in_bytes = rate * 1024
-        local body_size = 0
+        local body_size = 0 - after * 1024
 
         ngx_req.init_body(buf_size)
         while true do
