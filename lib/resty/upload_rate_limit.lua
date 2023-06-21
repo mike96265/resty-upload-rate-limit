@@ -13,7 +13,11 @@ local mt = {
 
 local function limit_upload_rate(rate, after, buf_size, chunk_size)
     if rate then
-        local sock = req_socket()
+        local sock,err = req_socket()
+        if ( err == "no body" ) then
+            ngx.log(ngx.ERR,err)
+            return
+        end
         local start = ngx_now()
 
         local rate_in_bytes = rate * 1024
