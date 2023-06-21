@@ -18,10 +18,16 @@ local function limit_upload_rate(rate, after, buf_size, chunk_size)
 
         local rate_in_bytes = rate * 1024
         local body_size = 0 - after * 1024
+        local content_length = tonumber(ngx.req.get_headers()["Content-Length"])
 
         ngx_req.init_body(buf_size * 1024)
         while true do
-            local chunk, err = sock:receive(chunk_size * 1024)
+            local read_size = chunk_size * 1024
+            if content_length > 0 and content_length < read_size then
+                read_size = content_length
+            end
+            content_length = content_length - read_size
+            local chunk, err = sock:receive(read_size)
             if not chunk then
                 if err == "closed" then
                     break
